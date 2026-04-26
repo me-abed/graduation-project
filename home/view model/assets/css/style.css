@@ -1,0 +1,124 @@
+:root{
+     --base-color:#213448;
+     --layer-color:#547792;
+     --font-color:#ECEFCA;
+     --light-color:#94B4C1;
+     --body-color1:#d9d9d9;
+     --body-color2:#ecefca;
+     --bodt-color3:#b2b2b2;
+     --button-weight: 700;
+     --font-family: "Saira", sans-serif;
+}
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+}
+ *::selection{
+     background-color: var(--layer-color);
+}
+ a{
+     text-decoration: none;
+}
+ ul{
+     list-style-type: none;
+}
+ html,body {
+     scroll-behavior: smooth;
+     height:100%;
+     color: var(--font-color);
+     font-family: var(--font-family);
+     background-color:#1C1C1C;
+}
+ #app {
+     display:flex;
+     height:100vh;
+     box-sizing:border-box;
+     align-items:stretch;
+}
+ #viewport {
+     flex:1;
+     background-image: url('../images/filed.png');
+     border-radius:8px;
+     overflow:hidden;
+     display:flex;
+     align-items:center;
+     justify-content:center;
+     width: 75%;
+     min-height:240px;
+}
+ #panel{
+     width: 25%;
+     background-color:var(--base-color);
+     border-radius:8px;
+     padding:25px;
+     box-sizing:border-box;
+     box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+}
+ select option{
+     background-color: var(--font-color);
+}
+ h2 {
+     margin:6px 0 12px 0;
+     color:var(--font-color);
+}
+ .row {
+     display:flex;
+     gap:8px;
+     align-items:center;
+     margin-bottom:10px;
+}
+ label {
+     font-size:13px;
+     color:#cdd7e0;
+     min-width:110px;
+}
+ input[type="range"], select, input[type="number"], input[type="text"] {
+     display:block;
+     width:100%;
+     padding:8px 10px;
+     border-radius:15px;
+     border:none;
+     background:var(--font-color);
+     color:var(--base-color);
+     font-size:13px;
+     box-sizing:border-box;
+}
+ input:focus{
+     outline: none;
+     border-color: var(--layer-color);
+}
+ select:focus{
+     outline: none;
+     border-color: var(--layer-color);
+}
+ input[type="text"] {
+     min-width:180px;
+}
+ button {
+     cursor:pointer;
+     padding:8px 10px;
+     background:var(--layer-color);
+     border:none;
+     border-radius:15px;
+     color: var(--font-color);
+     transition: 500ms;
+     font-weight: var(--button-weight);
+}
+ button:hover{
+     background-color: var(--light-color);
+     color: var(--base-color);
+}
+ p{
+     font-size:0.9375rem;
+     font-family: var(--font-default);
+     font-weight: 600;
+     margin-bottom: 0px;
+}
+ model-viewer {
+     width: 100%;
+     height: 100%;
+     background-color: transparent;
+     border-radius: 15px;
+}
+ 

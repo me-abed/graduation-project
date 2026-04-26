@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+ <!-- ! google fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  
+    <!-- !bootstrab link -->
+      <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+      <!-- ! css link -->
+      <link rel="stylesheet" href="assets/css/style.css">
+        <!--! fontaswem link -->
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+   
+
+<!-- ! 3D IMAGES -->
+ 
+ <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+ 
+<!-- !  js Libraries-->
+ <!--! Three.js  -->
+<script src="three.min.js"></script>
+
+<!--! Vanta.js -->
+<script src="vanta.globe.min.js"></script>
+<script src="vanta.net.min.js"></script>
+
+
+</head>
+
+<body data-bs-spy="scroll" class="vh-100">
+  <div id="vanta-bg">
+  
+  <!-- ****************************NAVBAR***************************************************** -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container d-flex  align-items-center  justify-content-between">
+      <!-- LOGO -->
+       <div class="logo d-flex align-items-center " >
+      <a class="navbar-brand d-flex align-items-center text-light" href="#">
+       
+       
+           <img  src="images/Untitled design (5).png" alt="logo" height="190" width="250"  />
+         
+          
+        
+      </a>
+       </div>
+
+      <!-- زر القائمة -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fa fa-bars"></i>
+      </button>
+
+     
+      <div class="collapse navbar-collapse justify-content-evenly " id="navbarMenu">
+        <ul class="menu navbar-nav">
+          <li class="menu-item nav-item current-menu-item">
+            <a href="#home" class=" nav-link">Home</a>
+          </li>
+          
+          <li class="menu-item nav-item">
+            <a href="#works" class="nav-link">How It Works</a>
+          </li>
+          <li class="menu-item nav-item">
+            <a href="create/index.html" class="nav-link">Create</a>
+          </li>
+          <!-- <li class="menu-item nav-item">
+            <a href="#" class="nav-link">Blog</a>
+          </li> -->
+          <li class="menu-item nav-item">
+            <a href="#question" class="nav-link">Questions</a>
+          </li>
+          <li class="menu-item nav-item">
+            <a href="#contact" class="nav-link">Contact</a>
+          </li>
+        </ul>
+        <div class="d-flex  gap-2">
+      <a class=" b1 active " href="signup/index.html"> Sign Up</a>
+      <a class="b2 button" href="login/index.html">Log In</a>
+
+      </div>
+      </div>
+       
+     
+    </div>
+  </nav>
+  <!-- &********************HOME******************************************** -->
+ <div id="home" class="header    d-flex align-items-center">
+  <div class="container">
+    <div class="row  justify-content-start ">
+      
+      <!-- العمود الأول: النص -->
+      <div class="col-md-6 text ">
+        <div class="line1">
+          <i class="fa-regular fa-image"></i>
+          
+          <span>Image To 3D</span>
+        </div>
+        <div class="content">
+          <h1 class="typing my-3">From 2D To 3D, In Just<br> One Minute.</h1>
+          <p>Convert your photos or concept art images into 3D models with stunning details in just a matter of seconds.</p>
+          <button class="b3"><a href="view model/index.html">Try Now</a></button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  
+</div>
+ <img  class="wave" src="images/intersecting-waves-scattered (1).svg" alt="wave" >
+  </div>
+   <!-- &******************HOW IT WORKS*************************************************** -->
+<div class="section-how-works " id="works">
+  <div class="layer d-flex justify-content-center ">
+    <div class="dots"></div>
+<h2 class="pb-20 text-center position-relative">How It Works</h2>
+  </div>
+<div class="container ">
+  <div  class="d-flex  align-items-center">
+    <div class="first-circle hover text-center w-25 border-r d-flex align-items-center flex-wrap justify-content-center box">
+      <div class="text-2xl pb-4 ">
+        Upload Your <br>2D Drawings</div>
+        <p > Send us your architectural designs in JPEG or PNG format. </p>
+      </div>
+         <div class="d-flex align-items-center">
+          <img class="arrow" src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%3e%3cpath%20fill='white'%20d='M16.15%2013H5q-.425%200-.712-.288T4%2012t.288-.712T5%2011h11.15L13.3%208.15q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L19.3%2011.3q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.575%204.575q-.3.3-.712.288t-.713-.313q-.275-.3-.288-.7t.288-.7z'/%3e%3c/svg%3e" alt="CubicDo Logo">
+        </div>
+          <div class="second-circle hover  text-center w-33 border-r d-flex align-items-center flex-wrap justify-content-center box">
+            <div class="text-2xl pb-4">Smart 3D Reconstruction</div> 
+          
+            <p>Using AI-based processing and geometry mapping,the system converts the 2D layout into a structured 3D model with accurate proportions.</p>
+          </div>
+          <div class="w-33">
+
+          </div>
+        </div>
+        <div  class="d-flex  justify-content-center ">
+            <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%3e%3cpath%20fill='white'%20d='M16.15%2013H5q-.425%200-.712-.288T4%2012t.288-.712T5%2011h11.15L13.3%208.15q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L19.3%2011.3q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.575%204.575q-.3.3-.712.288t-.713-.313q-.275-.3-.288-.7t.288-.7z'/%3e%3c/svg%3e" alt="CubicDo Logo" class="arrow rotate-90  ">
+          </div>
+          <div  class="d-flex">
+            <div class="w-33">
+
+            </div>
+            <div class=" third-circle hover text-center w-33 border-r d-flex align-items-center flex-wrap justify-content-center box">
+              <div class="text-2xl pb-4">Customized 3D Scene Creation</div> 
+              <p>Materials, lighting, textures, and environmental details are automatically generated and optimized for realism.</p>
+            </div>
+              <div class="w-8 d-flex align-items-center justify-content-center">
+                <div><img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%3e%3cpath%20fill='none'%20stroke='white'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='2'%20d='M4%2017h12M4%2017l3.5-3.5M4%2017l3.5%203.5M7%207h13m0%200l-3.5-3.5M20%207l-3.5%203.5'/%3e%3c/svg%3e" alt="CubicDo Logo" class="arrow" >
+                </div>
+              </div>
+              <div class=" forth-cricle hover text-center w-25 border-r d-flex align-items-center flex-wrap justify-content-center box">
+                <div class="text-2xl pb-4">Review and Iterate</div>
+                 <p>Preview the scene, provide feedback, and finalise the details to ensure perfection.</p> </div>
+                </div>
+                <div  class="d-flex justify-content-center">
+                  <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2024%2024'%3e%3cpath%20fill='white'%20d='M16.15%2013H5q-.425%200-.712-.288T4%2012t.288-.712T5%2011h11.15L13.3%208.15q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L19.3%2011.3q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.575%204.575q-.3.3-.712.288t-.713-.313q-.275-.3-.288-.7t.288-.7z'/%3e%3c/svg%3e" alt="CubicDo Logo" class="arrow rotate-90" >
+                </div>
+                <div  class="d-flex " >
+                  <div class="fifth-circle hover border-r  w-100 text-center mb-5  box">
+                    <div class="text-2xl" >
+                      3D Web Scene 
+
+                    </div>
+                    Final Project <br ><br >
+                    <div class="parent p   gap-2  py-3"  >
+                      <div class=" div1 box box-mini  " >Share as a link<br data-v-cd4810a7="">via sms, email, <br data-v-cd4810a7="">whatsapp ect.<br data-v-cd4810a7=""></div>
+                        <div class=" div2 box box-mini  " data-v-cd4810a7="">Post<br data-v-cd4810a7=""> on social media</div>
+                        <div class="div3 box box-mini " data-v-cd4810a7="">Create unlimited renders just by exploring the scene</div>
+                        <div class="div4 box box-mini " data-v-cd4810a7="">Embed <br data-v-cd4810a7="">on your website</div>
+                        <div class="div5 box box-mini" data-v-cd4810a7="">Download<br data-v-cd4810a7=""> as GLTF models</div>
+                        <div class="div6 box box-mini " data-v-cd4810a7="">Use internally<br data-v-cd4810a7=""> by you or your team</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+</div>
+
+<!--****************************** CREATE ******************************-->
+<div id="create" class="galary-section  ">
+  <img  src="images/wave.svg" alt="wave">
+  
+  
+<div class="container ">
+    
+<div class="slider  d-flex flex-column  justify-content-center align-items-center ">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs " id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab">
+          <span>All</span>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="Brand-tab" data-bs-toggle="tab" data-bs-target="#stu" type="button" role="tab">
+          <span>Statues</span>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="Design-tab" data-bs-toggle="tab" data-bs-target="#teeth" type="button" role="tab">
+          <span>Teeth</span>
+        </button>
+      </li>
+    </ul>
+
+    <!--^ Tab Contents -->
+    <div class="tab-content" id="myTabContent">
+
+      <!--  ALL TAB -->
+      <div class="tab-pane fade show active" id="All" role="tabpanel">
+        <div id="carouselAll" class="carousel " data-bs-ride="carousel">
+          <div class="carousel-inner">
+
+            <div class="carousel-item active  d-flex flex-column gap-20">
+              <div class=" d-flex justify-content-center gap-20 align-items-center  w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (7).png" alt="2D Image">
+                </div>
+                
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer src="images/ramses_ii_egyptian_statue_-_louvre.glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center  gap-20 align-items-center w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (8).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer src="images/teeth.glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+            </div>
+
+            <div class="carousel-item d-flex flex-column gap-20 ">
+              <div class="d-flex justify-content-center align-items-center g-5 w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (12).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer class="model4" src="images/hieroglyph_stone_pyramid (1).glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center align-items-center gap-20 w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (10).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3 ">
+                  <model-viewer class="model4" src="images/human_teeth (1).glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+            </div>
+
+           
+          </div>
+
+         
+         
+       
+        </div>
+      </div>
+
+      <!--  ^STATUES TAB -->
+      <div class="tab-pane fade" id="stu" role="tabpanel">
+        <div id="carouselBrand" class="carousel " data-bs-ride="carousel">
+          <div class="carousel-inner">
+
+            <div class="carousel-item active ">
+              <div class="d-flex justify-content-center align-items-center gap-20 w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (7).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer src="images/ramses_ii_egyptian_statue_-_louvre.glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+              
+            </div>
+            <div class="carousel-item  ">
+              
+              <div class="d-flex justify-content-center align-items-center gap-20 w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (12).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer class="model4" src="images/hieroglyph_stone_pyramid (1).glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        
+        </div>
+      </div>
+
+      <!-- ^ TEETH TAB -->
+      <div class="tab-pane fade" id="teeth" role="tabpanel">
+        <div id="carouselDesign" class="carousel " data-bs-ride="carousel">
+          <div class="carousel-inner">
+
+            <div class="carousel-item active  d-flex flex-column gap-20">
+              <div class="d-flex justify-content-center align-items-center gap-20 w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (8).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer src="images/teeth.glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+              
+            </div>
+            <div class="carousel-item   d-flex flex-column gap-20">
+              
+               <div class="d-flex justify-content-center align-items-center gap-20 w-100">
+                <div class="d2">
+                  <img src="images/Untitled design (10).png" alt="2D Image">
+                </div>
+                <img src="images/arrow.png" class="arrow1" alt="arrow">
+                <div class="d3">
+                  <model-viewer src="images/human_teeth (1).glb" auto-rotate camera-controls disable-zoom></model-viewer>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+    
+</div>
+
+  </div>
+  
+ 
+  <img  src="images/wave (5).svg" alt="wave">
+
+  
+</div>
+<!-- * ************************************* QUSTION*************************************************** -->
+<div id="question" class="qustion-section mb-0 pb-4">
+ 
+  <section class="container ">
+ 
+    <div  class="frequently-left ">
+      <h2 >Frequently Asked</h2><h1>Questions</h1>
+      <p >Find answers to common questions about Visionners including its features, usage, pricing, safety, and how to get support.</p>
+                        <model-viewer src="/home/images/high_poly_question_mark.glb" auto-rotate  disable-zoom></model-viewer>
+
+    </div>
+    <div  class="frequently-right ">
+      <div  class="accordion">
+        <div  class="accordion-item">
+          <div  class="accordion-header ">
+            <span >What is Visionners?</span>
+            <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+          </div>
+          <div  class="accordion-content">
+          <p class="d-none" >VISIONNEERS is an AI-powered system that converts 2D images of statues and dental structures into detailed, interactive 3D digital models for visualization and analysis.</p>
+        </div>
+      </div>
+      <div  class="accordion-item">
+        <div  class="accordion-header ">
+          <span >What can Visionners do?</span>
+          <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+        </div>
+          <div  class="accordion-content">
+            <p class="d-none">The system analyzes a 2D image, estimates depth and structural features, and reconstructs a realistic 3D model with accurate geometry and surface details — ready for web interaction.</p>
+          </div>
+        </div>
+        <div  class="accordion-item">
+          <div  class="accordion-header">
+            <span >What are the key advantages of Visionners?</span>
+            <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add"></div>
+            <div  class="accordion-content">
+              <p class="d-none" >VISIONNEERS offers fast and accurate 3D reconstruction from a single 2D image, reducing the need for manual modeling. It combines AI-based depth estimation with realistic texture generation to produce detailed 3D models. The system supports both artistic (statues) and dental applications, provides interactive web-based visualization, and significantly saves time and effort compared to traditional 3D design workflows.</p>
+            </div>
+          </div>
+            <div  class="accordion-item">
+              <div  class="accordion-header">
+                <span >How to use Visionners?</span>
+                <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add"></div>
+                <div  class="accordion-content">
+                  <p class="d-none" >On Visionners , all it takes to generate a 3D model is uploading a single image. Supported formats include .JPG, .JPEG, .PNG, and .WebP, with a maximum file size of 20MB.</p>
+                </div>
+              </div>
+              <div  class="accordion-item">
+                  <div  class="accordion-header">
+                    <span >What 3D file formats does Visionners support?</span>
+                    <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+                  </div>
+                  <div  class="accordion-content">
+                    <p class="d-none" >Visionners  supports downloading models in multiple formats, including .glb, .mlb, which are compatible with mainstream 3D modeling software (such as Blender, Unity and Maya) and 3D printing software.</p>
+                  </div>
+                </div>
+                <div  class="accordion-item">
+                  <div  class="accordion-header">
+                    <span >Is Visionners safe and legal?</span>
+                    <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+                  </div>
+                  <div  class="accordion-content">
+                    <p class="d-none">Visionners adopts industry-standard security measures to protect user data, ensuring the confidentiality, integrity, and availability of all uploaded content. For details, please review our Privacy Policy.</p>
+                  </div>
+                </div>
+                <div  class="accordion-item">
+                  <div  class="accordion-header">
+                    <span >Are the 3D models generated on Visionners private?</span>
+                    <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+                  </div>
+                  <div  class="accordion-content">
+                    <p class="d-none" >Yes. By default, all models you generate are private and visible only to you. You can generate a share link on the model details page to share them publicly.</p>
+                  </div>
+                </div>
+                <div  class="accordion-item">
+                  <div  class="accordion-header">
+                    <span >How to contact us for support?</span>
+                    <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+                  </div>
+                  <div  class="accordion-content">
+                    <p class="d-none">Join our official Discord community to interact directly with other users and our team, getting the latest news and support. Email us at <span style="color: #c7ffbc; cursor: pointer;">support@Visionners.ai</span>
+                       for answers and help.</p>
+                      </div>
+                    </div>
+                    <div  class="accordion-item">
+                      <div  class="accordion-header">
+                        <span >Why do subscription credits reset at the end of the billing period?</span>
+                        <img  src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20fill='none'%3e%3cpath%20fill='%23fff'%20fill-opacity='.8'%20fill-rule='evenodd'%20d='M7.334%2014.003a2%202%200%201%200%200%204H14v6.666a2%202%200%200%200%204%200v-6.666h6.667a2%202%200%201%200%200-4H18V7.336a2%202%200%201%200-4%200v6.667z'%20clip-rule='evenodd'/%3e%3c/svg%3e" class="" alt="add">
+                      </div>
+                      <div  class="accordion-content">
+                        <p class="d-none">Subscription credits reset at the end of each billing period to ensure fair usage and predictable access for all users. This system encourages you to use your credits within the paid period, prevents unused credits from accumulating indefinitely, and helps maintain consistent service levels and resource availability.
+
+If your plan allows roll-overs or upgrades, those details will be shown in your subscription terms.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              
+            </div>
+              <img src="images/wave (4).svg" alt="wave" class="wave3">
+    
+ <!-- *********************************counter********************************* -->
+ <div class="counter  d-flex justify-content-center align-items-center " >
+            
+<div class="container ">
+     <div class="stats-container">
+    <div class="stat-box">
+      <i class="fa-solid fa-users"></i>
+      <div class="stat-number" data-target="1520">0</div>
+      <div class="stat-label">Visitors</div>
+    </div>
+    <div class="stat-box">
+    <span class="loader1"></span>
+      <div class="stat-number" data-target="245">0</div>
+      <div class="stat-label">Completed projects</div>
+    </div>
+    <div class="stat-box">
+      <span class="loader"></span>
+      <div class="stat-number" data-target="380">0</div>
+      <div class="stat-label">Subscriptions</div>
+    </div>
+   </div>
+</div>
+   
+</div>
+ <img src="images/wave (5).svg" alt="wave" class="wave3">
+              <!-- & contact us -->
+<div class="CONTACT text-center" id="contact">
+    <div class="container">
+        <div class="title">
+            <h2>CONTACT US</h2>
+            
+            </div>
+            
+          
+            <form>
+                <div class="input-group ">
+                  <input class="input1" type="text" placeholder="Your Name" name="name">
+                  <input class="input1" type="email" placeholder="Your Email" name="email">
+                </div>
+                <input type="text" placeholder="Subject" name="subject">
+                <textarea placeholder="Message" name="message"></textarea>
+                <button class="btn btn-main" type="submit">Send Message</button>
+              </form>
+    </div>
+</div>
+
+<!-- ***************************** FOOTER ******************************** -->
+ <footer>
+  <img src="images/wave (6).svg" alt="wave" class="wave3">
+    <div class="container">
+        <div class="all-content">
+      <div class="about">
+        <div class="logo text-center">
+          <img src="images/logo (5).png" alt="Logo">
+          
+        </div>
+
+       
+    
+      </div>
+      <div class="subscription">
+        <div class="subscription-box">
+          <h3>Subscribe our Newsletter</h3>
+          <p>
+            Stay updated with the latest features, project updates, and innovations from VISIONNEERS.
+Be the first to know about new releases, improvements, and exclusive insights in 2D-to-3D technology for statues and dental models.
+          </p>
+          <div class="sunscription-group">
+            <input type="email" placeholder="Enter Your Email Address">
+            <button class="btn btn-main">
+              <i class="fa-solid fa-envelope"></i> Subscribe
+            </button>
+          </div>
+        </div>
+        <div class="quick-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li>
+                <i class="fa-solid fa-angle-right"></i>
+              <a href="#home">Home</a>
+            </li>
+            <li>
+                <i class="fa-solid fa-angle-right"></i>
+              <a href="#contact">Contact</a>
+            </li>
+            <li>
+                <i class="fa-solid fa-angle-right"></i>
+              <a href="#create">Created</a>
+            </li>
+            <li>
+                <i class="fa-solid fa-angle-right"></i>
+              <a href="#question">Question</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="contact-details">
+        <h3>Get in Touch</h3>
+        <ul>
+      
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:contact@example.com">contact@example.com</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <a href="tel:+155895548855">+1 5589 55488 55</a>
+          </li>
+        </ul>
+      </div>
+        </div>
+    </div>
+  </footer>
+               
+  <!--!js link  -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/index.js"> </script>
+</body>
+</html>

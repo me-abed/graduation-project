@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create 3D Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #080b1f;
+      --bg-2: #11173a;
+      --card: rgba(20, 27, 60, 0.58);
+      --line: rgba(130, 170, 255, 0.35);
+      --txt-main: #f4f8ff;
+      --txt-sub: #b8c4e9;
+      --accent: #6cf2ff;
+      --accent-2: #8f7bff;
+      --ok: #8cffc1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Saira", sans-serif;
+      color: var(--txt-main);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(108, 242, 255, 0.15), transparent 60%),
+        radial-gradient(900px 700px at 90% 20%, rgba(143, 123, 255, 0.2), transparent 60%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+      overflow-x: hidden;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(30px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb.a {
+      width: 280px;
+      height: 280px;
+      background: #43d4ff;
+      top: -80px;
+      left: -70px;
+      animation: floatA 12s ease-in-out infinite;
+    }
+
+    .orb.b {
+      width: 350px;
+      height: 350px;
+      background: #7f69ff;
+      bottom: -140px;
+      right: -100px;
+      animation: floatB 14s ease-in-out infinite;
+    }
+
+    @keyframes floatA {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(26px); }
+    }
+
+    @keyframes floatB {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-24px); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 28px 16px;
+      display: grid;
+      place-items: center;
+    }
+
+    .panel {
+      width: min(960px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 22px 60px rgba(3, 7, 22, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: clamp(20px, 4vw, 34px);
+      transform-style: preserve-3d;
+      perspective: 1200px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      letter-spacing: 0.3px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--txt-sub);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      max-width: 620px;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--txt-main);
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .back-link:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(108, 242, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .drop-zone {
+      border: 2px dashed rgba(120, 178, 255, 0.52);
+      border-radius: 18px;
+      padding: clamp(24px, 7vw, 44px) 18px;
+      text-align: center;
+      background: linear-gradient(155deg, rgba(18, 28, 66, 0.65), rgba(13, 22, 50, 0.25));
+      box-shadow: inset 0 0 30px rgba(105, 140, 255, 0.14);
+      transition: 0.25s ease;
+      cursor: pointer;
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 32px rgba(108, 242, 255, 0.2), 0 0 28px rgba(108, 242, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .drop-title {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+
+    .drop-text {
+      margin: 0;
+      color: var(--txt-sub);
+      font-size: 0.95rem;
+    }
+
+    .browse-btn {
+      margin-top: 16px;
+      padding: 12px 18px;
+      display: inline-block;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #071026;
+      font-weight: 700;
+      pointer-events: none;
+      transition: 0.25s ease;
+    }
+
+    .browse-btn:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 12px 26px rgba(111, 150, 255, 0.35);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .meta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      color: var(--txt-sub);
+      font-size: 0.92rem;
+    }
+
+    .meta b {
+      color: var(--ok);
+    }
+
+    .list-wrap {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(8, 13, 34, 0.45);
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .list-title {
+      margin: 0 0 10px;
+      color: var(--txt-sub);
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    .file-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid rgba(145, 166, 235, 0.35);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(20, 29, 65, 0.6);
+    }
+
+    .file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 75%;
+    }
+
+    .file-size {
+      color: #9ab8ff;
+      font-size: 0.86rem;
+      white-space: nowrap;
+    }
+
+    .hint {
+      margin-top: 16px;
+      color: var(--txt-sub);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+
+  <main class="page">
+    <section class="panel">
+      <div class="top">
+        <div>
+          <h1>Upload Your Files</h1>
+          <p class="subtitle">
+            Browse and select multiple files from your computer, or drag and drop them here.
+            This UI follows the same futuristic 3D style as your main theme.
+          </p>
+        </div>
+        <a class="back-link" href="../index.html">Back to Home</a>
+      </div>
+
+      <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="Upload files">
+        <p class="drop-title">Drop files here</p>
+        <p class="drop-text">Accepted: images, 3D assets, or documents</p>
+        <span id="browseBtn" class="browse-btn">Browse Files</span>
+        <input id="fileInput" type="file" multiple>
+      </div>
+
+      <div class="meta">
+        <span>Selected files: <b id="fileCount">0</b></span>
+        <span>Total size: <b id="totalSize">0 KB</b></span>
+      </div>
+
+      <div class="list-wrap">
+        <p class="list-title">Selected File List</p>
+        <ul id="fileList" class="file-list"></ul>
+      </div>
+
+      <p class="hint">
+        This page is ready for frontend browsing and selecting multiple files.
+        If you want, I can connect it next to your backend upload API.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const fileListEl = document.getElementById("fileList");
+    const fileCountEl = document.getElementById("fileCount");
+    const totalSizeEl = document.getElementById("totalSize");
+
+    let selectedFiles = [];
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+    }
+
+    function renderFiles() {
+      fileListEl.innerHTML = "";
+      let total = 0;
+
+      selectedFiles.forEach((file) => {
+        total += file.size;
+
+        const li = document.createElement("li");
+        li.className = "file-item";
+        li.innerHTML = `
+          <span class="file-name">${file.name}</span>
+          <span class="file-size">${formatSize(file.size)}</span>
+        `;
+        fileListEl.appendChild(li);
+      });
+
+      fileCountEl.textContent = String(selectedFiles.length);
+      totalSizeEl.textContent = formatSize(total);
+    }
+
+    function mergeFiles(newFiles) {
+      const map = new Map(selectedFiles.map((f) => [f.name + "_" + f.size, f]));
+      Array.from(newFiles).forEach((file) => {
+        const key = file.name + "_" + file.size;
+        if (!map.has(key)) map.set(key, file);
+      });
+      selectedFiles = Array.from(map.values());
+      renderFiles();
+    }
+
+    fileInput.addEventListener("change", (event) => {
+      mergeFiles(event.target.files);
+      fileInput.value = "";
+    });
+
+    dropZone.addEventListener("click", () => fileInput.click());
+    dropZone.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    ["dragenter", "dragover"].forEach((name) => {
+      dropZone.addEventListener(name, (event) => {
+        event.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach((name) => {
+      dropZone.addEventListener(name, (event) => {
+        event.preventDefault();
+        dropZone.classList.remove("dragover");
+      });
+    });
+
+    dropZone.addEventListener("drop", (event) => {
+      mergeFiles(event.dataTransfer.files);
+    });
+  </script>
+</body>
+</html>

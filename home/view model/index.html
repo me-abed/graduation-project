@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <!-- ! google fonts -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+      <!--! fontaswem link -->
+      <link rel="stylesheet" href="all.min.css">
+      <!-- !bootstrab link -->
+      <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+      <!-- ! css link -->
+      <link rel="stylesheet" href="assets/css/style.css">
+      <!-- ! 3D IMAGES -->
+      <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+   </head>
+   <body>
+      <div id="app" >
+         <div id="viewport">
+            <model-viewer id="model"
+               src="assets/images/egyptian_cat_statue.glb"
+               alt="3D Model"
+               camera-controls
+               auto-rotate
+               environment-image="neutral"
+               exposure="1"
+               scale="1 1 1"
+               shadow-intensity="1"
+               >
+            </model-viewer>
+         </div>
+         <div id="panel">
+            <h2>3D Viewer</h2>
+            <div class="row">
+               <p>Model (GLB) URL:</p>
+               <input id="modelPath" type="text" value="assets/model.glb" />
+            </div>
+            <div class="row">
+               <p>Resize Dimensions:</p>
+               <input id="canvasWidth" type="number" value="1228" class="small" />
+               <input id="canvasHeight" type="number" value="768" class="small" />
+               <button id="resizeBtn">Apply Size</button>
+            </div>
+            <div class="row">
+               <p>zoom:</p>
+               <input type="range" id="zoomRange" min="0.1" max="3" step="0.1" value="1">
+            </div>
+            <div class="row">
+               <p>Exposure:</p>
+               <input type="range" id="lightRange" min="0" max="2" step="0.1" value="1">
+            </div>
+            <div class="row">
+               <p> Transform Controls:</p>
+               <select id="transformToggle">
+                  <option value="true" selected>Enabled</option>
+                  <option value="false">Disabled</option>
+               </select>
+            </div>
+            <div class="row btn-row">
+               <button id="loadBtn"> Download</button>
+               <button id="resetBtn">Reset</button>
+            </div>
+         </div>
+      </div>
+      <!--!js link  -->
+      <script src="assets/js/bootstrap.bundle.min.js"></script>
+      <script src="assets/js/index.js"> </script>   
+   </body>
+</html>
