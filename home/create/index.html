@@ -255,6 +255,52 @@
       font-size: 0.9rem;
       line-height: 1.45;
     }
+
+    .upload-btn {
+      margin-top: 18px;
+      padding: 14px 28px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #071026;
+      font-family: "Saira", sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(111, 150, 255, 0.35);
+    }
+
+    .upload-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(140, 255, 193, 0.15);
+      color: var(--ok);
+      border: 1px solid rgba(140, 255, 193, 0.35);
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(255, 100, 100, 0.15);
+      color: #ff6464;
+      border: 1px solid rgba(255, 100, 100, 0.35);
+    }
   </style>
 </head>
 <body>
@@ -293,8 +339,10 @@
 
       <p class="hint">
         This page is ready for frontend browsing and selecting multiple files.
-        If you want, I can connect it next to your backend upload API.
+        Click Upload to send files to the server.
       </p>
+
+      <button id="uploadBtn" class="upload-btn">Upload Files</button>
     </section>
   </main>
 
@@ -304,6 +352,7 @@
     const fileListEl = document.getElementById("fileList");
     const fileCountEl = document.getElementById("fileCount");
     const totalSizeEl = document.getElementById("totalSize");
+    const uploadBtn = document.getElementById("uploadBtn");
 
     let selectedFiles = [];
 
@@ -373,6 +422,58 @@
     dropZone.addEventListener("drop", (event) => {
       mergeFiles(event.dataTransfer.files);
     });
+
+    // Upload functionality
+    uploadBtn.addEventListener("click", async () => {
+      if (selectedFiles.length === 0) {
+        showStatus("Please select at least one file", "error");
+        return;
+      }
+
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = "Uploading...";
+
+      const formData = new FormData();
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          showStatus(`Uploaded ${result.files.length} files successfully!`, "success");
+          selectedFiles = [];
+          renderFiles();
+        } else {
+          showStatus(result.message || "Upload failed", "error");
+        }
+      } catch (error) {
+        showStatus("Error: " + error.message, "error");
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = "Upload Files";
+      }
+    });
+
+    function showStatus(message, type) {
+      const status = document.getElementById("status") || createStatusElement();
+      status.textContent = message;
+      status.className = "status " + type;
+    }
+
+    function createStatusElement() {
+      const el = document.createElement("div");
+      el.id = "status";
+      el.className = "status";
+      uploadBtn.after(el);
+      return el;
+    }
   </script>
 </body>
 </html>
