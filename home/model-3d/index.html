@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Model</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body.model-3d-page {
+      margin: 0;
+      min-height: 100vh;
+      background: #0b0f1a;
+    }
+    .viewer-wrap {
+      position: relative;
+      margin-top: 88px;
+      height: calc(100vh - 88px);
+      padding: 12px;
+      box-sizing: border-box;
+    }
+    model-viewer#duck-viewer {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      background: radial-gradient(ellipse at center, #1a2344 0%, #0b0f1a 70%);
+    }
+    .navbar.model-nav .logo img {
+      height: 72px;
+      width: auto;
+    }
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px;
+      text-align: center;
+      background: rgba(6, 10, 22, 0.92);
+      color: #e8eeff;
+      font-family: "Saira", sans-serif;
+    }
+    .loader-overlay.is-hidden {
+      display: none;
+    }
+    .loader-spinner {
+      width: 52px;
+      height: 52px;
+      border: 3px solid rgba(108, 242, 255, 0.2);
+      border-top-color: #6cf2ff;
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loader-title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .loader-sub {
+      margin: 0;
+      max-width: 360px;
+      font-size: 0.92rem;
+      color: #9fb0d4;
+      line-height: 1.45;
+    }
+    .loader-overlay.is-error .loader-spinner {
+      display: none;
+    }
+    .loader-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .loader-actions.is-hidden {
+      display: none;
+    }
+    .loader-actions a {
+      color: #071026;
+      background: linear-gradient(135deg, #6cf2ff, #8f7bff);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body class="model-3d-page" data-bs-spy="scroll">
+  <div id="loader-overlay" class="loader-overlay is-hidden" aria-live="polite">
+    <div class="loader-spinner" aria-hidden="true"></div>
+    <p class="loader-title" id="loader-title">Preparing your model</p>
+    <p class="loader-sub" id="loader-sub">Checking the server for processed output. You can leave this tab open.</p>
+    <div class="loader-actions is-hidden" id="loader-actions">
+      <a href="../create/index.html">Back to upload</a>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top model-nav">
+    <div class="container d-flex align-items-center justify-content-between">
+      <div class="logo d-flex align-items-center">
+        <a class="navbar-brand d-flex align-items-center text-light" href="../index.html">
+          <img src="../images/Untitled design (5).png" alt="logo" height="72" />
+        </a>
+      </div>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMenu3d"
+        aria-controls="navbarMenu3d"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse justify-content-evenly" id="navbarMenu3d">
+        <ul class="menu navbar-nav">
+          <li class="menu-item nav-item">
+            <a href="../index.html#home" class="nav-link">Home</a>
+          </li>
+          <li class="menu-item nav-item">
+            <a href="../index.html#works" class="nav-link">How It Works</a>
+          </li>
+          <li class="menu-item nav-item">
+            <a href="../create/index.html" class="nav-link">Create</a>
+          </li>
+          <li class="menu-item nav-item current-menu-item">
+            <a href="index.html" class="nav-link">3D Model</a>
+          </li>
+          <li class="menu-item nav-item">
+            <a href="../index.html#question" class="nav-link">Questions</a>
+          </li>
+          <li class="menu-item nav-item">
+            <a href="../index.html#contact" class="nav-link">Contact</a>
+          </li>
+        </ul>
+        <div class="d-flex gap-2">
+          <a class="b1" href="../signup/index.html">Sign Up</a>
+          <a class="b2 button" href="../login/index.html">Log In</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="viewer-wrap">
+    <model-viewer
+      id="duck-viewer"
+      alt="3D model"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1"
+      exposure="1"
+      environment-image="neutral"
+    ></model-viewer>
+  </div>
+
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const DEFAULT_MODEL = "../../Duck.glb";
+      const POLL_MS = 2500;
+      const MAX_WAIT_MS = 30 * 60 * 1000;
+
+      function apiBase() {
+        return window.location.port === "5000" ? "" : "http://127.0.0.1:5000";
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const processing = params.has("processing");
+
+      const overlay = document.getElementById("loader-overlay");
+      const loaderTitle = document.getElementById("loader-title");
+      const loaderSub = document.getElementById("loader-sub");
+      const loaderActions = document.getElementById("loader-actions");
+      const viewer = document.getElementById("duck-viewer");
+
+      function showLoaderError(title, sub) {
+        overlay.classList.add("is-error");
+        loaderTitle.textContent = title;
+        loaderSub.textContent = sub;
+        loaderActions.classList.remove("is-hidden");
+      }
+
+      function hideLoader() {
+        overlay.classList.add("is-hidden");
+      }
+
+      function showLoader() {
+        overlay.classList.remove("is-hidden", "is-error");
+        loaderActions.classList.add("is-hidden");
+        loaderTitle.textContent = "Preparing your model";
+        loaderSub.textContent =
+          "Checking the server for processed output. You can leave this tab open.";
+      }
+
+      function setModelSrc(url) {
+        const base = apiBase();
+        if (base && url.startsWith("/")) {
+          viewer.setAttribute("crossorigin", "anonymous");
+          viewer.src = base + url;
+        } else if (url.startsWith("http")) {
+          viewer.setAttribute("crossorigin", "anonymous");
+          viewer.src = url;
+        } else {
+          viewer.removeAttribute("crossorigin");
+          viewer.src = url;
+        }
+      }
+
+      async function pollForOutput() {
+        const base = apiBase();
+        const start = Date.now();
+
+        showLoader();
+
+        while (Date.now() - start < MAX_WAIT_MS) {
+          let data;
+          try {
+            const res = await fetch(base + "/check-folder", { method: "GET" });
+            data = await res.json();
+            if (!res.ok && data.status !== "error") {
+              showLoaderError("Request failed", "HTTP " + res.status);
+              setModelSrc(DEFAULT_MODEL);
+              return;
+            }
+          } catch (e) {
+            showLoaderError(
+              "Cannot reach the API",
+              "Start the Flask app (port 5000) or open this site from the same origin as the server. " +
+                (e && e.message ? e.message : "")
+            );
+            setModelSrc(DEFAULT_MODEL);
+            return;
+          }
+
+          if (data.status === "error") {
+            showLoaderError("Server error", data.message || "check-folder failed");
+            setModelSrc(DEFAULT_MODEL);
+            return;
+          }
+
+          if (data.status === "success" && data.files && data.files.length > 0) {
+            let prep;
+            try {
+              const pr = await fetch(base + "/prepare-preview", { method: "GET" });
+              if (!pr.ok) {
+                const errBody = await pr.json().catch(function () {
+                  return {};
+                });
+                throw new Error(errBody.message || "HTTP " + pr.status);
+              }
+              prep = await pr.json();
+            } catch (e) {
+              showLoaderError("Copy failed", e && e.message ? e.message : "prepare-preview request failed");
+              setModelSrc(DEFAULT_MODEL);
+              return;
+            }
+
+            if (prep.status === "success" && prep.preview_url) {
+              const full = base + prep.preview_url;
+              setModelSrc(full);
+
+              const done = function () {
+                hideLoader();
+                history.replaceState({}, "", window.location.pathname);
+              };
+
+              const fallbackTimer = window.setTimeout(done, 20000);
+              viewer.addEventListener(
+                "load",
+                function () {
+                  window.clearTimeout(fallbackTimer);
+                  done();
+                },
+                { once: true }
+              );
+              viewer.addEventListener("error", function onErr() {
+                viewer.removeEventListener("error", onErr);
+                window.clearTimeout(fallbackTimer);
+                showLoaderError("Preview failed", "Could not load the model file.");
+              });
+              return;
+            }
+
+            if (prep.status === "empty") {
+              await new Promise(function (r) {
+                setTimeout(r, POLL_MS);
+              });
+              continue;
+            }
+
+            showLoaderError("Prepare failed", prep.message || "Unknown error");
+            setModelSrc(DEFAULT_MODEL);
+            return;
+          }
+
+          await new Promise(function (r) {
+            setTimeout(r, POLL_MS);
+          });
+        }
+
+        showLoaderError(
+          "Still waiting",
+          "No output file appeared within the time limit. You can go back and try again, or keep this page open."
+        );
+        loaderActions.classList.remove("is-hidden");
+        setModelSrc(DEFAULT_MODEL);
+      }
+
+      if (processing) {
+        pollForOutput();
+      } else {
+        setModelSrc(DEFAULT_MODEL);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -73,11 +73,50 @@
       50% { transform: translateY(-24px); }
     }
 
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      background: rgba(8, 11, 31, 0.82);
+      border-bottom: 1px solid var(--line);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-nav a {
+      text-decoration: none;
+      color: var(--txt-sub);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .site-nav a:hover {
+      color: var(--txt-main);
+      border-color: rgba(130, 170, 255, 0.4);
+    }
+
+    .site-nav a.active {
+      color: var(--accent);
+      border-color: var(--line);
+    }
+
     .page {
       position: relative;
       z-index: 1;
       min-height: 100vh;
-      padding: 28px 16px;
+      padding: 76px 16px 28px;
       display: grid;
       place-items: center;
     }
@@ -304,6 +343,11 @@
   </style>
 </head>
 <body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Create</a>
+    <a href="../model-3d/index.html">3D Model</a>
+  </nav>
   <div class="orb a"></div>
   <div class="orb b"></div>
 
@@ -317,7 +361,7 @@
             This UI follows the same futuristic 3D style as your main theme.
           </p>
         </div>
-        <a class="back-link" href="../index.html">Back to Home</a>
+        <a class="back-link" href="../index.html">Home</a>
       </div>
 
       <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="Upload files">
@@ -338,8 +382,7 @@
       </div>
 
       <p class="hint">
-        This page is ready for frontend browsing and selecting multiple files.
-        Click Upload to send files to the server.
+        upload 20 photos for 3d modeling 
       </p>
 
       <button id="uploadBtn" class="upload-btn">Upload Files</button>
@@ -438,8 +481,11 @@
         formData.append("files", file);
       });
 
+      const apiBase =
+        window.location.port === "5000" ? "" : "http://127.0.0.1:5000";
+
       try {
-        const response = await fetch("http://127.0.0.1:5000/upload", {
+        const response = await fetch(apiBase + "/upload", {
           method: "POST",
           body: formData,
         });
@@ -447,13 +493,21 @@
         const result = await response.json();
 
         if (response.ok) {
-          showStatus(`Uploaded ${result.files.length} files successfully!`, "success");
+          showStatus(`Uploaded ${result.files.length} files. Opening viewer…`, "success");
           selectedFiles = [];
           renderFiles();
+          const path = window.location.pathname || "";
+          const previewUrl =
+            window.location.port === "5000" && (path === "/" || path === "")
+              ? "/home/model-3d/index.html?processing=1"
+              : "../model-3d/index.html?processing=1";
+          window.location.href = previewUrl;
+          return;
         } else {
           showStatus(result.message || "Upload failed", "error");
         }
       } catch (error) {
+      console.log("error", error);
         showStatus("Error: " + error.message, "error");
       } finally {
         uploadBtn.disabled = false;
