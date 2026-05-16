@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Transfers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #080b1f;
+      --bg-2: #11173a;
+      --card: rgba(20, 27, 60, 0.58);
+      --line: rgba(130, 170, 255, 0.35);
+      --txt-main: #f4f8ff;
+      --txt-sub: #b8c4e9;
+      --accent: #6cf2ff;
+      --accent-2: #8f7bff;
+      --ok: #8cffc1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Saira", sans-serif;
+      color: var(--txt-main);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(108, 242, 255, 0.15), transparent 60%),
+        radial-gradient(900px 700px at 90% 20%, rgba(143, 123, 255, 0.2), transparent 60%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      background: rgba(8, 11, 31, 0.82);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-nav a,
+    .site-nav .auth-logout {
+      text-decoration: none;
+      color: var(--txt-sub);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+      background: transparent;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .site-nav a:hover,
+    .site-nav .auth-logout:hover {
+      color: var(--txt-main);
+      border-color: rgba(130, 170, 255, 0.4);
+    }
+
+    .site-nav a.active { color: var(--accent); border-color: var(--line); }
+    .site-nav [data-auth-nav] { display: contents; }
+
+    .page {
+      padding: 88px 16px 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: clamp(20px, 4vw, 32px);
+      box-shadow: 0 22px 60px rgba(3, 7, 22, 0.6);
+    }
+
+    h1 { margin: 0 0 8px; font-size: clamp(1.4rem, 3vw, 2rem); }
+    .subtitle { margin: 0 0 24px; color: var(--txt-sub); }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 0;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #071026;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--txt-main);
+      border: 1px solid var(--line);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.88rem;
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #071026;
+      border: 0;
+    }
+
+    .btn-download:hover {
+      color: #071026;
+      opacity: 0.92;
+    }
+
+    .actions-cell {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 640px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(130, 170, 255, 0.2);
+    }
+
+    th {
+      color: var(--txt-sub);
+      font-weight: 600;
+      font-size: 0.88rem;
+      background: rgba(8, 13, 34, 0.5);
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    tr:hover td { background: rgba(20, 29, 65, 0.35); }
+
+    .empty, .loading, .error-msg {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--txt-sub);
+    }
+
+    .error-msg { color: #ff8a8a; }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(255, 100, 100, 0.15);
+      color: #ff6464;
+      border: 1px solid rgba(255, 100, 100, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Home</a>
+    <a href="../create/index.html" class="auth-gated" hidden>Create</a>
+    <a href="index.html" class="active auth-gated" hidden>My Transfers</a>
+    <div data-auth-nav>
+      <a class="auth-signup" href="../signup/index.html">Sign Up</a>
+      <a class="auth-login" href="../login/index.html">Log In</a>
+      <button type="button" class="auth-logout" hidden>Sign Out</button>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="panel">
+      <h1>My Transfers</h1>
+      <p class="subtitle">All photo transfers linked to your account.</p>
+
+      <div class="toolbar">
+        <span id="transferCount" class="subtitle" style="margin:0"></span>
+        <a href="../create/index.html" class="btn btn-primary auth-gated" hidden>New Transfer</a>
+      </div>
+
+      <div id="status" class="status error" role="alert"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Photos</th>
+              <th>Created</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="transfersBody">
+            <tr><td colspan="6" class="loading">Loading transfers…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/auth-api.js"></script>
+  <script src="../assets/js/transfers-utils.js"></script>
+  <script src="../assets/js/auth-nav.js"></script>
+  <script>
+    if (!AuthApi.requireAuth("../login/index.html")) {
+      throw new Error("Auth required");
+    }
+
+    const tbody = document.getElementById("transfersBody");
+    const statusEl = document.getElementById("status");
+    const countEl = document.getElementById("transferCount");
+
+    function showError(message) {
+      statusEl.textContent = message;
+      statusEl.style.display = "block";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    }
+
+    function photoCount(transfer) {
+      if (Array.isArray(transfer.photo_urls)) return transfer.photo_urls.length;
+      if (typeof transfer.photos_count === "number") return transfer.photos_count;
+      return "—";
+    }
+
+    function renderRows(transfers) {
+      if (!transfers.length) {
+        tbody.innerHTML =
+          '<tr><td colspan="6" class="empty">No transfers yet. <a href="../create/index.html">Create one</a>.</td></tr>';
+        countEl.textContent = "0 transfers";
+        return;
+      }
+
+      countEl.textContent =
+        transfers.length + " transfer" + (transfers.length === 1 ? "" : "s");
+
+      tbody.innerHTML = transfers
+        .map((t) => {
+          const outputUrl = TransfersUtils.getOutputUrl(t);
+          const downloadBtn = outputUrl
+            ? `<a class="btn btn-download btn-sm" href="${escapeHtml(outputUrl)}" download>Download</a>`
+            : "";
+          return `
+        <tr>
+          <td>${escapeHtml(t.id)}</td>
+          <td>${escapeHtml(t.name)}</td>
+          <td>${escapeHtml(t.email)}</td>
+          <td>${escapeHtml(photoCount(t))}</td>
+          <td>${escapeHtml(formatDate(t.created_at))}</td>
+          <td class="actions-cell">
+            <a class="btn btn-ghost btn-sm" href="show.html?id=${encodeURIComponent(t.id)}">Show</a>
+            ${downloadBtn}
+          </td>
+        </tr>`;
+        })
+        .join("");
+    }
+
+    async function loadTransfers() {
+      try {
+        const { response, result } = await AuthApi.apiGetAuth("/transfers");
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            AuthApi.clearAuth();
+            AuthApi.requireAuth("../login/index.html");
+            return;
+          }
+          showError(AuthApi.getErrorMessage(result, "Failed to load transfers."));
+          tbody.innerHTML =
+            '<tr><td colspan="6" class="error-msg">Could not load transfers.</td></tr>';
+          return;
+        }
+
+        const data = AuthApi.getData(result);
+        const transfers = Array.isArray(data) ? data : [];
+        renderRows(transfers);
+      } catch (err) {
+        showError("Network error: " + err.message);
+        tbody.innerHTML =
+          '<tr><td colspan="6" class="error-msg">Could not load transfers.</td></tr>';
+      }
+    }
+
+    loadTransfers();
+  </script>
+</body>
+</html>

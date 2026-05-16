@@ -112,6 +112,33 @@
       border-color: var(--line);
     }
 
+    .site-nav [data-auth-nav] {
+      display: contents;
+    }
+
+    .site-nav .auth-logout {
+      font-family: "Saira", sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .site-nav .auth-logout:hover {
+      color: var(--txt-main);
+      border-color: rgba(130, 170, 255, 0.4);
+    }
+
+    .site-nav .auth-logout:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .page {
       position: relative;
       z-index: 1;
@@ -340,13 +367,54 @@
       color: #ff6464;
       border: 1px solid rgba(255, 100, 100, 0.35);
     }
+
+    .form-fields {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--txt-sub);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(8, 13, 34, 0.55);
+      color: var(--txt-main);
+      font-family: "Saira", sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108, 242, 255, 0.12);
+    }
+
+    .field input::placeholder {
+      color: rgba(184, 196, 233, 0.55);
+    }
   </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Main">
     <a href="../index.html">Home</a>
-    <a href="index.html" class="active">Create</a>
-    <a href="../model-3d/index.html">3D Model</a>
+    <a href="index.html" class="active auth-gated" hidden>Create</a>
+    <a href="../my-transfers/index.html" class="auth-gated" hidden>My Transfers</a>
+    <div data-auth-nav>
+      <a class="auth-signup" href="../signup/index.html">Sign Up</a>
+      <a class="auth-login" href="../login/index.html">Log In</a>
+      <button type="button" class="auth-logout" hidden>Sign Out</button>
+    </div>
   </nav>
   <div class="orb a"></div>
   <div class="orb b"></div>
@@ -364,11 +432,22 @@
         <a class="back-link" href="../index.html">Home</a>
       </div>
 
-      <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="Upload files">
-        <p class="drop-title">Drop files here</p>
-        <p class="drop-text">Accepted: images, 3D assets, or documents</p>
-        <span id="browseBtn" class="browse-btn">Browse Files</span>
-        <input id="fileInput" type="file" multiple>
+      <div class="form-fields">
+        <div class="field">
+          <label for="nameInput">Name</label>
+          <input id="nameInput" type="text" name="name" placeholder="Your name" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="emailInput">Email</label>
+          <input id="emailInput" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+      </div>
+
+      <div id="dropZone" class="drop-zone" role="button" tabindex="0" aria-label="Upload photos">
+        <p class="drop-title">Drop photos here</p>
+        <p class="drop-text">JPEG, PNG, JPG, GIF, SVG, or WebP — up to 5 MB each</p>
+        <span id="browseBtn" class="browse-btn">Browse Photos</span>
+        <input id="fileInput" type="file" accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,image/webp" multiple>
       </div>
 
       <div class="meta">
@@ -385,17 +464,41 @@
         upload 20 photos for 3d modeling 
       </p>
 
-      <button id="uploadBtn" class="upload-btn">Upload Files</button>
+      <button id="uploadBtn" class="upload-btn" type="button">Submit Transfer</button>
     </section>
   </main>
 
+  <script src="../assets/js/auth-api.js"></script>
+  <script src="../assets/js/auth-nav.js"></script>
   <script>
+    if (!AuthApi.requireAuth("../login/index.html")) {
+      throw new Error("Auth required");
+    }
+
+    const client = AuthApi.getClient();
+    if (client) {
+      document.getElementById("nameInput").value = client.name || "";
+      document.getElementById("emailInput").value = client.email || "";
+    }
+
     const dropZone = document.getElementById("dropZone");
     const fileInput = document.getElementById("fileInput");
     const fileListEl = document.getElementById("fileList");
     const fileCountEl = document.getElementById("fileCount");
     const totalSizeEl = document.getElementById("totalSize");
     const uploadBtn = document.getElementById("uploadBtn");
+    const nameInput = document.getElementById("nameInput");
+    const emailInput = document.getElementById("emailInput");
+
+    const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+    const ACCEPTED_IMAGE_TYPES = new Set([
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+      "image/gif",
+      "image/svg+xml",
+      "image/webp",
+    ]);
 
     let selectedFiles = [];
 
@@ -425,12 +528,30 @@
       totalSizeEl.textContent = formatSize(total);
     }
 
+    function isValidPhoto(file) {
+      if (!ACCEPTED_IMAGE_TYPES.has(file.type)) {
+        showStatus(`"${file.name}" is not a supported image type.`, "error");
+        return false;
+      }
+      if (file.size > MAX_PHOTO_BYTES) {
+        showStatus(`"${file.name}" exceeds the 5 MB limit.`, "error");
+        return false;
+      }
+      return true;
+    }
+
     function mergeFiles(newFiles) {
       const map = new Map(selectedFiles.map((f) => [f.name + "_" + f.size, f]));
+      let rejected = false;
       Array.from(newFiles).forEach((file) => {
+        if (!isValidPhoto(file)) {
+          rejected = true;
+          return;
+        }
         const key = file.name + "_" + file.size;
         if (!map.has(key)) map.set(key, file);
       });
+      if (rejected) return;
       selectedFiles = Array.from(map.values());
       renderFiles();
     }
@@ -466,10 +587,36 @@
       mergeFiles(event.dataTransfer.files);
     });
 
-    // Upload functionality
+    function getErrorMessage(result, response) {
+      if (result && typeof result.message === "string" && result.message) {
+        return result.message;
+      }
+      if (result && result.errors) {
+        const firstKey = Object.keys(result.errors)[0];
+        const firstError = result.errors[firstKey];
+        if (Array.isArray(firstError) && firstError[0]) return firstError[0];
+      }
+      return response.status === 422
+        ? "Validation failed. Check your name, email, and photos."
+        : "Upload failed";
+    }
+
     uploadBtn.addEventListener("click", async () => {
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+
+      if (!name) {
+        showStatus("Please enter your name.", "error");
+        nameInput.focus();
+        return;
+      }
+      if (!email) {
+        showStatus("Please enter your email.", "error");
+        emailInput.focus();
+        return;
+      }
       if (selectedFiles.length === 0) {
-        showStatus("Please select at least one file", "error");
+        showStatus("Please select at least one photo.", "error");
         return;
       }
 
@@ -477,41 +624,42 @@
       uploadBtn.textContent = "Uploading...";
 
       const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
       selectedFiles.forEach((file) => {
-        formData.append("files", file);
+        formData.append("photos[]", file);
       });
 
-      const apiBase =
-        window.location.port === "5000" ? "" : "http://127.0.0.1:5000";
-
       try {
-        const response = await fetch(apiBase + "/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        const result = await response.json();
+        const { response, result } = await AuthApi.apiPostFormAuth(
+          "/transfers",
+          formData
+        );
 
         if (response.ok) {
-          showStatus(`Uploaded ${result.files.length} files. Opening viewer…`, "success");
-          selectedFiles = [];
-          renderFiles();
-          const path = window.location.pathname || "";
-          const previewUrl =
-            window.location.port === "5000" && (path === "/" || path === "")
-              ? "/home/model-3d/index.html?processing=1"
-              : "../model-3d/index.html?processing=1";
-          window.location.href = previewUrl;
+          const data = AuthApi.getData(result);
+          const photoCount = Array.isArray(data?.photo_urls)
+            ? data.photo_urls.length
+            : selectedFiles.length;
+          showStatus(
+            `Transfer saved (${photoCount} photo${photoCount === 1 ? "" : "s"}). Redirecting…`,
+            "success"
+          );
+          setTimeout(() => {
+            window.location.href = "../my-transfers/index.html";
+          }, 600);
           return;
-        } else {
-          showStatus(result.message || "Upload failed", "error");
         }
+
+        showStatus(
+          AuthApi.getErrorMessage(result, getErrorMessage(result, response)),
+          "error"
+        );
       } catch (error) {
-      console.log("error", error);
         showStatus("Error: " + error.message, "error");
       } finally {
         uploadBtn.disabled = false;
-        uploadBtn.textContent = "Upload Files";
+        uploadBtn.textContent = "Submit Transfer";
       }
     });
 

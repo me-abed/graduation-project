@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer Details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --bg-1: #080b1f;
+      --bg-2: #11173a;
+      --card: rgba(20, 27, 60, 0.58);
+      --line: rgba(130, 170, 255, 0.35);
+      --txt-main: #f4f8ff;
+      --txt-sub: #b8c4e9;
+      --accent: #6cf2ff;
+      --accent-2: #8f7bff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Saira", sans-serif;
+      color: var(--txt-main);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(108, 242, 255, 0.15), transparent 60%),
+        radial-gradient(900px 700px at 90% 20%, rgba(143, 123, 255, 0.2), transparent 60%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      background: rgba(8, 11, 31, 0.82);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-nav a,
+    .site-nav .auth-logout {
+      text-decoration: none;
+      color: var(--txt-sub);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+      background: transparent;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .site-nav a:hover,
+    .site-nav .auth-logout:hover {
+      color: var(--txt-main);
+      border-color: rgba(130, 170, 255, 0.4);
+    }
+
+    .site-nav a.active { color: var(--accent); border-color: var(--line); }
+    .site-nav [data-auth-nav] { display: contents; }
+
+    .page {
+      padding: 88px 16px 32px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: clamp(20px, 4vw, 32px);
+    }
+
+    h1 { margin: 0 0 20px; font-size: clamp(1.3rem, 3vw, 1.8rem); }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .meta-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(8, 13, 34, 0.45);
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--txt-sub);
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    .meta-item strong { font-weight: 600; }
+
+    .photos-title {
+      margin: 0 0 12px;
+      color: var(--txt-sub);
+      font-weight: 500;
+    }
+
+    .photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .photos img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(8, 13, 34, 0.5);
+    }
+
+    .toolbar { margin-bottom: 18px; }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      color: var(--txt-main);
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .loading, .error-msg {
+      text-align: center;
+      padding: 40px 16px;
+      color: var(--txt-sub);
+    }
+
+    .error-msg { color: #ff8a8a; }
+
+    .output-section {
+      margin-bottom: 28px;
+    }
+
+    .output-title {
+      margin: 0 0 12px;
+      color: var(--txt-sub);
+      font-weight: 500;
+    }
+
+    .viewer-wrap {
+      height: min(420px, 55vh);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(8, 13, 34, 0.5);
+    }
+
+    model-viewer#output-viewer {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #1a2344 0%, #0b0f1a 70%);
+    }
+
+    .processing-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-height: 280px;
+      padding: 32px 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(8, 13, 34, 0.45);
+      text-align: center;
+    }
+
+    .processing-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(108, 242, 255, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .processing-box p {
+      margin: 0;
+      color: var(--txt-sub);
+      font-size: 1rem;
+    }
+
+    .processing-box strong {
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .output-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #071026;
+      border: 0;
+    }
+
+    .btn-download:hover {
+      color: #071026;
+      opacity: 0.92;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Home</a>
+    <a href="../create/index.html" class="auth-gated" hidden>Create</a>
+    <a href="index.html" class="active auth-gated" hidden>My Transfers</a>
+    <div data-auth-nav>
+      <a class="auth-signup" href="../signup/index.html">Sign Up</a>
+      <a class="auth-login" href="../login/index.html">Log In</a>
+      <button type="button" class="auth-logout" hidden>Sign Out</button>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="panel">
+      <div class="toolbar">
+        <a href="index.html" class="btn">← Back to list</a>
+      </div>
+
+      <div id="content">
+        <p class="loading">Loading transfer…</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/auth-api.js"></script>
+  <script src="../assets/js/transfers-utils.js"></script>
+  <script src="../assets/js/auth-nav.js"></script>
+  <script>
+    if (!AuthApi.requireAuth("../login/index.html")) {
+      throw new Error("Auth required");
+    }
+
+    const content = document.getElementById("content");
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    }
+
+    function getOutputUrl(transfer) {
+      return TransfersUtils.getOutputUrl(transfer);
+    }
+
+    function outputSectionHtml(transfer) {
+      const outputUrl = getOutputUrl(transfer);
+      if (outputUrl) {
+        const modelSrc = TransfersUtils.getProxiedModelUrl(outputUrl);
+        return `
+        <section class="output-section">
+          <p class="output-title">3D Model Output</p>
+          <div class="viewer-wrap">
+            <model-viewer
+              id="output-viewer"
+              src="${escapeHtml(modelSrc)}"
+              alt="3D model output"
+              camera-controls
+              auto-rotate
+              shadow-intensity="1"
+              exposure="1"
+              environment-image="neutral"
+              crossorigin="anonymous"
+            ></model-viewer>
+          </div>
+          <div class="output-actions">
+            <a class="btn btn-download" href="${escapeHtml(outputUrl)}" download target="_blank" rel="noopener noreferrer">Download Output</a>
+          </div>
+        </section>`;
+      }
+      return `
+        <section class="output-section" id="outputSection">
+          <p class="output-title">3D Model Output</p>
+          <div class="processing-box">
+            <div class="processing-spinner" aria-hidden="true"></div>
+            <p><strong>PROCESSING</strong></p>
+            <p>Your 3D model is being generated. This page will update automatically.</p>
+          </div>
+        </section>`;
+    }
+
+    let pollTimer = null;
+
+    function startPolling() {
+      if (pollTimer) return;
+      pollTimer = setInterval(async () => {
+        try {
+          const { response, result } = await AuthApi.apiGetAuth(
+            "/transfers/" + encodeURIComponent(id)
+          );
+          if (!response.ok) return;
+          const transfer = AuthApi.getData(result);
+          if (getOutputUrl(transfer)) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+            renderTransfer(transfer);
+          }
+        } catch (_) {}
+      }, 5000);
+    }
+
+    function renderTransfer(transfer) {
+      const photos = Array.isArray(transfer.photo_urls) ? transfer.photo_urls : [];
+      const photosHtml = photos.length
+        ? photos
+            .map(
+              (url) =>
+                `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+                  <img src="${escapeHtml(url)}" alt="Transfer photo">
+                </a>`
+            )
+            .join("")
+        : '<p class="loading">No photos for this transfer.</p>';
+
+      content.innerHTML = `
+        <h1>Transfer #${escapeHtml(transfer.id)}</h1>
+        <div class="meta-grid">
+          <div class="meta-item"><span>Name</span><strong>${escapeHtml(transfer.name)}</strong></div>
+          <div class="meta-item"><span>Email</span><strong>${escapeHtml(transfer.email)}</strong></div>
+          <div class="meta-item"><span>Created</span><strong>${escapeHtml(formatDate(transfer.created_at))}</strong></div>
+          <div class="meta-item"><span>Photos</span><strong>${photos.length}</strong></div>
+        </div>
+        ${outputSectionHtml(transfer)}
+        <p class="photos-title">Photos</p>
+        <div class="photos">${photosHtml}</div>
+      `;
+    }
+
+    async function loadTransfer() {
+      if (!id) {
+        content.innerHTML =
+          '<p class="error-msg">Missing transfer ID. <a href="index.html">Return to list</a>.</p>';
+        return;
+      }
+
+      try {
+        const { response, result } = await AuthApi.apiGetAuth(
+          "/transfers/" + encodeURIComponent(id)
+        );
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            AuthApi.clearAuth();
+            AuthApi.requireAuth("../login/index.html");
+            return;
+          }
+          const msg =
+            response.status === 404
+              ? "Transfer not found."
+              : AuthApi.getErrorMessage(result, "Failed to load transfer.");
+          content.innerHTML = `<p class="error-msg">${escapeHtml(msg)} <a href="index.html">Return to list</a>.</p>`;
+          return;
+        }
+
+        const transfer = AuthApi.getData(result);
+        document.title = "Transfer #" + transfer.id;
+        renderTransfer(transfer);
+        if (!getOutputUrl(transfer)) startPolling();
+      } catch (err) {
+        content.innerHTML = `<p class="error-msg">Network error: ${escapeHtml(err.message)}</p>`;
+      }
+    }
+
+    loadTransfer();
+  </script>
+</body>
+</html>

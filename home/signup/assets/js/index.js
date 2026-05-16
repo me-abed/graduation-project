@@ -1,87 +1,111 @@
- //  !display password
- let passwordInput = document.getElementById("inputPassword5");
-  let toggleIcon = document.querySelector(".togglePassword");
+const passwordInput = document.getElementById("inputPassword5");
+const toggleIcon = document.querySelector(".togglePassword");
 
-  toggleIcon.addEventListener("click", () => {
-    let type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-    passwordInput.setAttribute("type", type);
+toggleIcon.addEventListener("click", () => {
+  const type =
+    passwordInput.getAttribute("type") === "password" ? "text" : "password";
+  passwordInput.setAttribute("type", type);
+  toggleIcon.classList.toggle("fa-eye");
+  toggleIcon.classList.toggle("fa-eye-slash");
+});
 
-    // بدّل شكل الأيقونة
-    toggleIcon.classList.toggle("fa-eye");
-    toggleIcon.classList.toggle("fa-eye-slash");
-  });
-
-// ! back ground animation
 VANTA.NET({
   el: "#right",
-   mouseControls: true,
+  mouseControls: true,
   touchControls: true,
   gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  scale: 1.00,
-  scaleMobile: 1.00,
+  minHeight: 200.0,
+  minWidth: 200.0,
+  scale: 1.0,
+  scaleMobile: 1.0,
   color: 0x3c5368,
   backgroundColor: 0x213448,
-  points: 15.00,
-  maxDistance: 27.00,
-  spacing: 16.00
-})
+  points: 15.0,
+  maxDistance: 27.0,
+  spacing: 16.0,
+});
 
+const userName = document.querySelector(".name");
+const email = document.querySelector(".email");
+const password = document.querySelector(".password");
+const signUp = document.querySelector("button");
+const successEl = document.querySelector(".done");
+const errorEl = document.querySelector(".erorr");
 
-// !html elements
-let userName = document.querySelector(".name");
-let email = document.querySelector(".email");
-let password = document.querySelector(".password");
-let signUp = document.querySelector("button");
-let sucess = document.querySelector(".done");
-let erorr = document.querySelector(".erorr");
+function showSignupError(message) {
+  errorEl.textContent = message;
+  errorEl.classList.remove("d-none");
+  successEl.classList.add("d-none");
+}
 
+function showSignupSuccess(message) {
+  successEl.textContent = message;
+  successEl.classList.remove("d-none");
+  errorEl.classList.add("d-none");
+}
 
-let allInfo = localStorage.getItem("allusers") ?
-    JSON.parse(localStorage.getItem("allusers")) : [];
+function hideSignupMessages() {
+  successEl.classList.add("d-none");
+  errorEl.classList.add("d-none");
+}
 
-// ! functions
-function addInfo() {
-    let userInfo = {
-        user: userName.value.trim(),
-        userEmail: email.value.trim(),
-        userPass: password.value,
+async function register() {
+  const name = userName.value.trim();
+  const emailVal = email.value.trim();
+  const pass = password.value;
+
+  if (!name || !emailVal || !pass) {
+    showSignupError("Please fill in all fields.");
+    return;
+  }
+  if (pass.length < 6) {
+    showSignupError("Password must be at least 6 characters.");
+    return;
+  }
+
+  hideSignupMessages();
+  signUp.disabled = true;
+  const label = signUp.textContent;
+  signUp.textContent = "Signing up…";
+
+  try {
+    const { response, result } = await AuthApi.apiPost("/register", {
+      name,
+      email: emailVal,
+      password: pass,
+    });
+
+    if (response.ok) {
+      const payload = AuthApi.getAuthPayload(result);
+      if (payload) AuthApi.saveAuth(payload);
+      showSignupSuccess("Account created. Redirecting…");
+      cleanInput();
+      setTimeout(() => {
+        const next = new URLSearchParams(window.location.search).get("next");
+        window.location.href = next || "../index.html";
+      }, 800);
+      return;
     }
-    // !checkif email here
-    let finalEmail = false;
-    for (let i = 0; i <= allInfo.length - 1; i++) {
-        if (allInfo[i].userEmail === userInfo.userEmail) {
-            finalEmail = true;
-            break;
-        }
-    }
-    if (finalEmail !== true) {
 
-        allInfo.push(userInfo);
-
-        // !local storage
-        localStorage.setItem("allusers", JSON.stringify(allInfo));
-
-
-        sucess.classList.remove("d-none");
-        erorr.classList.add("d-none");
-        cleanInput();
-    } else {
-        erorr.classList.remove("d-none");
-        sucess.classList.add("d-none");
-        cleanInput();
-    }
-
+    showSignupError(
+      AuthApi.getErrorMessage(result, "Registration failed. Please try again.")
+    );
+  } catch (err) {
+    showSignupError("Network error: " + err.message);
+  } finally {
+    signUp.disabled = false;
+    signUp.textContent = label;
+  }
 }
 
 function cleanInput() {
-    userName.value = "";
-    email.value = "";
-    password.value = ""
+  userName.value = "";
+  email.value = "";
+  password.value = "";
 }
-// !events
-signUp.addEventListener("click", function() {
 
-    addInfo();
-})
+signUp.addEventListener("click", register);
+
+password.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") register();
+});

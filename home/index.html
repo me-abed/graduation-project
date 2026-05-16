@@ -76,11 +76,11 @@
           <li class="menu-item nav-item">
             <a href="#works" class="nav-link">How It Works</a>
           </li>
-          <li class="menu-item nav-item">
+          <li class="menu-item nav-item auth-gated" hidden>
             <a href="create/index.html" class="nav-link">Create</a>
           </li>
-          <li class="menu-item nav-item">
-            <a href="model-3d/index.html" class="nav-link">3D Model</a>
+          <li class="menu-item nav-item auth-gated" hidden>
+            <a href="my-transfers/index.html" class="nav-link">My Transfers</a>
           </li>
           <!-- <li class="menu-item nav-item">
             <a href="#" class="nav-link">Blog</a>
@@ -92,10 +92,10 @@
             <a href="#contact" class="nav-link">Contact</a>
           </li>
         </ul>
-        <div class="d-flex  gap-2">
-      <a class=" b1 active " href="signup/index.html"> Sign Up</a>
-      <a class="b2 button" href="login/index.html">Log In</a>
-
+        <div class="d-flex gap-2" data-auth-nav>
+      <a class="b1 active auth-signup" href="signup/index.html">Sign Up</a>
+      <a class="b2 button auth-login" href="login/index.html">Log In</a>
+      <button type="button" class="b2 button auth-logout" hidden>Sign Out</button>
       </div>
       </div>
        
@@ -583,6 +583,8 @@ Be the first to know about new releases, improvements, and exclusive insights in
                
   <!--!js link  -->
     <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/index.js"> </script>
+    <script src="assets/js/auth-api.js"></script>
+    <script src="assets/js/auth-nav.js"></script>
+    <script src="assets/js/index.js"></script>
 </body>
 </html>

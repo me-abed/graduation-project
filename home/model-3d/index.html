@@ -6,327 +6,151 @@
   <title>3D Model</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body.model-3d-page {
+    :root {
+      --bg-1: #080b1f;
+      --bg-2: #11173a;
+      --card: rgba(20, 27, 60, 0.58);
+      --line: rgba(130, 170, 255, 0.35);
+      --txt-main: #f4f8ff;
+      --txt-sub: #b8c4e9;
+      --accent: #6cf2ff;
+      --accent-2: #8f7bff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
       margin: 0;
       min-height: 100vh;
-      background: #0b0f1a;
+      font-family: "Saira", sans-serif;
+      color: var(--txt-main);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(108, 242, 255, 0.15), transparent 60%),
+        radial-gradient(900px 700px at 90% 20%, rgba(143, 123, 255, 0.2), transparent 60%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
     }
-    .viewer-wrap {
-      position: relative;
-      margin-top: 88px;
-      height: calc(100vh - 88px);
-      padding: 12px;
-      box-sizing: border-box;
-    }
-    model-viewer#duck-viewer {
-      width: 100%;
-      height: 100%;
-      border-radius: 12px;
-      background: radial-gradient(ellipse at center, #1a2344 0%, #0b0f1a 70%);
-    }
-    .navbar.model-nav .logo img {
-      height: 72px;
-      width: auto;
-    }
-    .loader-overlay {
+
+    .site-nav {
       position: fixed;
-      inset: 0;
-      z-index: 200;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      padding: 24px;
-      text-align: center;
-      background: rgba(6, 10, 22, 0.92);
-      color: #e8eeff;
-      font-family: "Saira", sans-serif;
-    }
-    .loader-overlay.is-hidden {
-      display: none;
-    }
-    .loader-spinner {
-      width: 52px;
-      height: 52px;
-      border: 3px solid rgba(108, 242, 255, 0.2);
-      border-top-color: #6cf2ff;
-      border-radius: 50%;
-      animation: spin 0.85s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .loader-title {
-      margin: 0;
-      font-size: 1.15rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-    .loader-sub {
-      margin: 0;
-      max-width: 360px;
-      font-size: 0.92rem;
-      color: #9fb0d4;
-      line-height: 1.45;
-    }
-    .loader-overlay.is-error .loader-spinner {
-      display: none;
-    }
-    .loader-actions {
-      display: flex;
+      gap: 8px;
       flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 8px;
+      padding: 12px 16px;
+      background: rgba(8, 11, 31, 0.82);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
     }
-    .loader-actions.is-hidden {
-      display: none;
-    }
-    .loader-actions a {
-      color: #071026;
-      background: linear-gradient(135deg, #6cf2ff, #8f7bff);
+
+    .site-nav a,
+    .site-nav .auth-logout {
       text-decoration: none;
-      font-weight: 600;
-      padding: 10px 18px;
+      color: var(--txt-sub);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 8px 14px;
       border-radius: 10px;
-      font-size: 0.9rem;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+      background: transparent;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .site-nav a:hover,
+    .site-nav .auth-logout:hover {
+      color: var(--txt-main);
+      border-color: rgba(130, 170, 255, 0.4);
+    }
+
+    .site-nav a.active {
+      color: var(--accent);
+      border-color: var(--line);
+    }
+
+    .site-nav [data-auth-nav] { display: contents; }
+
+    .page {
+      min-height: 100vh;
+      padding: 88px 16px 32px;
+      display: grid;
+      place-items: center;
+    }
+
+    .panel {
+      width: min(520px, 100%);
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: clamp(28px, 5vw, 40px);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+    }
+
+    p {
+      margin: 0 0 24px;
+      color: var(--txt-sub);
+      line-height: 1.55;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #071026;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(111, 150, 255, 0.35);
     }
   </style>
 </head>
-<body class="model-3d-page" data-bs-spy="scroll">
-  <div id="loader-overlay" class="loader-overlay is-hidden" aria-live="polite">
-    <div class="loader-spinner" aria-hidden="true"></div>
-    <p class="loader-title" id="loader-title">Preparing your model</p>
-    <p class="loader-sub" id="loader-sub">Checking the server for processed output. You can leave this tab open.</p>
-    <div class="loader-actions is-hidden" id="loader-actions">
-      <a href="../create/index.html">Back to upload</a>
-    </div>
-  </div>
-
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top model-nav">
-    <div class="container d-flex align-items-center justify-content-between">
-      <div class="logo d-flex align-items-center">
-        <a class="navbar-brand d-flex align-items-center text-light" href="../index.html">
-          <img src="../images/Untitled design (5).png" alt="logo" height="72" />
-        </a>
-      </div>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarMenu3d"
-        aria-controls="navbarMenu3d"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fa fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse justify-content-evenly" id="navbarMenu3d">
-        <ul class="menu navbar-nav">
-          <li class="menu-item nav-item">
-            <a href="../index.html#home" class="nav-link">Home</a>
-          </li>
-          <li class="menu-item nav-item">
-            <a href="../index.html#works" class="nav-link">How It Works</a>
-          </li>
-          <li class="menu-item nav-item">
-            <a href="../create/index.html" class="nav-link">Create</a>
-          </li>
-          <li class="menu-item nav-item current-menu-item">
-            <a href="index.html" class="nav-link">3D Model</a>
-          </li>
-          <li class="menu-item nav-item">
-            <a href="../index.html#question" class="nav-link">Questions</a>
-          </li>
-          <li class="menu-item nav-item">
-            <a href="../index.html#contact" class="nav-link">Contact</a>
-          </li>
-        </ul>
-        <div class="d-flex gap-2">
-          <a class="b1" href="../signup/index.html">Sign Up</a>
-          <a class="b2 button" href="../login/index.html">Log In</a>
-        </div>
-      </div>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Home</a>
+    <a href="../create/index.html" class="auth-gated" hidden>Create</a>
+    <a href="../my-transfers/index.html" class="auth-gated" hidden>My Transfers</a>
+    <div data-auth-nav>
+      <a class="auth-signup" href="../signup/index.html">Sign Up</a>
+      <a class="auth-login" href="../login/index.html">Log In</a>
+      <button type="button" class="auth-logout" hidden>Sign Out</button>
     </div>
   </nav>
 
-  <div class="viewer-wrap">
-    <model-viewer
-      id="duck-viewer"
-      alt="3D model"
-      camera-controls
-      auto-rotate
-      shadow-intensity="1"
-      exposure="1"
-      environment-image="neutral"
-    ></model-viewer>
-  </div>
+  <main class="page">
+    <section class="panel">
+      <h1>3D Model Viewer</h1>
+      <p>Open a transfer from My Transfers to view or download your generated 3D model.</p>
+      <a class="btn auth-gated" href="../my-transfers/index.html" hidden>Go to My Transfers</a>
+      <a class="btn auth-login-link" href="../login/index.html">Log in to continue</a>
+    </section>
+  </main>
 
-  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/auth-api.js"></script>
+  <script src="../assets/js/auth-nav.js"></script>
   <script>
     (function () {
-      const DEFAULT_MODEL = "../../Duck.glb";
-      const POLL_MS = 2500;
-      const MAX_WAIT_MS = 30 * 60 * 1000;
-
-      function apiBase() {
-        return window.location.port === "5000" ? "" : "http://127.0.0.1:5000";
-      }
-
-      const params = new URLSearchParams(window.location.search);
-      const processing = params.has("processing");
-
-      const overlay = document.getElementById("loader-overlay");
-      const loaderTitle = document.getElementById("loader-title");
-      const loaderSub = document.getElementById("loader-sub");
-      const loaderActions = document.getElementById("loader-actions");
-      const viewer = document.getElementById("duck-viewer");
-
-      function showLoaderError(title, sub) {
-        overlay.classList.add("is-error");
-        loaderTitle.textContent = title;
-        loaderSub.textContent = sub;
-        loaderActions.classList.remove("is-hidden");
-      }
-
-      function hideLoader() {
-        overlay.classList.add("is-hidden");
-      }
-
-      function showLoader() {
-        overlay.classList.remove("is-hidden", "is-error");
-        loaderActions.classList.add("is-hidden");
-        loaderTitle.textContent = "Preparing your model";
-        loaderSub.textContent =
-          "Checking the server for processed output. You can leave this tab open.";
-      }
-
-      function setModelSrc(url) {
-        const base = apiBase();
-        if (base && url.startsWith("/")) {
-          viewer.setAttribute("crossorigin", "anonymous");
-          viewer.src = base + url;
-        } else if (url.startsWith("http")) {
-          viewer.setAttribute("crossorigin", "anonymous");
-          viewer.src = url;
-        } else {
-          viewer.removeAttribute("crossorigin");
-          viewer.src = url;
-        }
-      }
-
-      async function pollForOutput() {
-        const base = apiBase();
-        const start = Date.now();
-
-        showLoader();
-
-        while (Date.now() - start < MAX_WAIT_MS) {
-          let data;
-          try {
-            const res = await fetch(base + "/check-folder", { method: "GET" });
-            data = await res.json();
-            if (!res.ok && data.status !== "error") {
-              showLoaderError("Request failed", "HTTP " + res.status);
-              setModelSrc(DEFAULT_MODEL);
-              return;
-            }
-          } catch (e) {
-            showLoaderError(
-              "Cannot reach the API",
-              "Start the Flask app (port 5000) or open this site from the same origin as the server. " +
-                (e && e.message ? e.message : "")
-            );
-            setModelSrc(DEFAULT_MODEL);
-            return;
-          }
-
-          if (data.status === "error") {
-            showLoaderError("Server error", data.message || "check-folder failed");
-            setModelSrc(DEFAULT_MODEL);
-            return;
-          }
-
-          if (data.status === "success" && data.files && data.files.length > 0) {
-            let prep;
-            try {
-              const pr = await fetch(base + "/prepare-preview", { method: "GET" });
-              if (!pr.ok) {
-                const errBody = await pr.json().catch(function () {
-                  return {};
-                });
-                throw new Error(errBody.message || "HTTP " + pr.status);
-              }
-              prep = await pr.json();
-            } catch (e) {
-              showLoaderError("Copy failed", e && e.message ? e.message : "prepare-preview request failed");
-              setModelSrc(DEFAULT_MODEL);
-              return;
-            }
-
-            if (prep.status === "success" && prep.preview_url) {
-              const full = base + prep.preview_url;
-              setModelSrc(full);
-
-              const done = function () {
-                hideLoader();
-                history.replaceState({}, "", window.location.pathname);
-              };
-
-              const fallbackTimer = window.setTimeout(done, 20000);
-              viewer.addEventListener(
-                "load",
-                function () {
-                  window.clearTimeout(fallbackTimer);
-                  done();
-                },
-                { once: true }
-              );
-              viewer.addEventListener("error", function onErr() {
-                viewer.removeEventListener("error", onErr);
-                window.clearTimeout(fallbackTimer);
-                showLoaderError("Preview failed", "Could not load the model file.");
-              });
-              return;
-            }
-
-            if (prep.status === "empty") {
-              await new Promise(function (r) {
-                setTimeout(r, POLL_MS);
-              });
-              continue;
-            }
-
-            showLoaderError("Prepare failed", prep.message || "Unknown error");
-            setModelSrc(DEFAULT_MODEL);
-            return;
-          }
-
-          await new Promise(function (r) {
-            setTimeout(r, POLL_MS);
-          });
-        }
-
-        showLoaderError(
-          "Still waiting",
-          "No output file appeared within the time limit. You can go back and try again, or keep this page open."
-        );
-        loaderActions.classList.remove("is-hidden");
-        setModelSrc(DEFAULT_MODEL);
-      }
-
-      if (processing) {
-        pollForOutput();
-      } else {
-        setModelSrc(DEFAULT_MODEL);
+      const transfersBtn = document.querySelector(".auth-gated.btn");
+      const loginLink = document.querySelector(".auth-login-link");
+      if (AuthApi.isLoggedIn()) {
+        if (transfersBtn) transfersBtn.hidden = false;
+        if (loginLink) loginLink.style.display = "none";
       }
     })();
   </script>
